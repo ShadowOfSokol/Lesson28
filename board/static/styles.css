@@ -87,3 +87,11 @@ form {
   margin: 0;
   padding: 0;
 }
+
+.success {
+    background: #00ff00;
+}
+
+.error {
+    background: #ff0000
+}
