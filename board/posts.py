@@ -8,8 +8,14 @@ from flask import (
     current_app
 )
 from board.database import get_db
+import os
+from dotenv import load_dotenv
+load_dotenv()
+import openai
+openai.api_key = os.getenv('AI_KEY')
+from openai import OpenAI
+client = OpenAI()
 bp = Blueprint('posts', __name__)
-
 @bp.route("/create", methods=("GET","POST"))
 def create():
     if request.method == "POST":
@@ -24,6 +30,7 @@ def create():
             return redirect(url_for("posts.posts"))
         else:
             flash("Something wrong!", category="error")
+            current_app.logger.info("Don`t have message")
     return render_template("posts/create.html")
 
 
@@ -33,3 +40,9 @@ def posts():
     db = get_db()
     posts = db.execute("SELECT author, message, created FROM post ORDER BY created DESC").fetchall()
     return render_template("posts/posts.html", posts=posts)
+@bp.route("/generate_message", methods=["POST"] )
+def generate_message():
+    response = client.completions.create(
+        model="gpt-3.5-turbo-instruct",
+        prompt="Write a post about {prompt}."
+    )

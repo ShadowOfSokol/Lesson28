@@ -16,6 +16,14 @@
         </div>
         <div class="form-group">
             <input type="submit" value="Post Message" class="submit-btn">
+            <button id="btn_ai" type="button" class="submit-btn">Generate with AI</button>
         </div>
     </form>
+
+    <script>
+        document.getElementById('btn_ai').addEventListener('click', async() =>{
+            const prompt = document.getElementById('message').value;
+            alert("prompt");
+        })
+    </script>
 {% endblock content %}
